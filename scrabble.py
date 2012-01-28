@@ -6,6 +6,7 @@
 
 import sys
 
+
 scrabble_dict = map(lambda x: x.strip(), open('ScrabbleDictionary.txt').readlines())
 
 # Makes a move, then returns score and new board state

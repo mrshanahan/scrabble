@@ -1,0 +1,31 @@
+STRUCTURE
+(soon) There will be three files:
+	scrabble.py	Stores the code for the Board and Square, as well as basic
+			state-changing functions
+	scrab_game.py	An implementation for a game of Scrabble
+	scrab_ai.py	A Scrabble-playing AI for the scrabble.py version of the game
+
+BOARD
+A class Board in scrabble.py stores all the info for the board: board size, location
+of bonuses, letter scores and frequencies (though the latter is really unnecessary),
+as well as some basic functions that evaluate its state, and two functions that change
+it.  These functions as local to the class as well as global:
+
+Given this:
+>>> b = Board()
+>>> move = [('w',(0,0)),('o',(1,0)),('r',(2,0)),('d',(3,))]
+this
+>>> new_b,score = make_move(b, move)
+and this
+>>> new_b,score = b.make_move(move)
+are equivalent.
+
+SQUARE
+Very basic; just stores tile info and bonus info.  Board is a 2d list comprised of
+Squares; it has a few state eval functions, but that's about it.
+
+GAMEPLAY:
+TBD
+
+AI:
+TBD

@@ -13,7 +13,8 @@ it.  These functions as local to the class as well as global:
 
 Given this:
 >>> b = Board()
->>> move = [('w',(0,0)),('o',(1,0)),('r',(2,0)),('d',(3,))]
+>>> move = [('w',(0,0)),('o',(1,0)),('r',(2,0)),('d',(3,0))]
+
 this
 >>> new_b,score = make_move(b, move)
 and this

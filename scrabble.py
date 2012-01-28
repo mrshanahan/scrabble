@@ -6,7 +6,6 @@
 
 import sys
 
-
 scrabble_dict = map(lambda x: x.strip(), open('ScrabbleDictionary.txt').readlines())
 
 # Makes a move, then returns score and new board state
@@ -69,7 +68,6 @@ class Board(object):
 	# Additionally define two global functions as Board functions; thus,
 	# can be called by a Board object with an implicit Board arg
 	make_move = make_move
-	is_valid_move = is_valid_move
 	
 	# Placement of bonus squares (Words with Friends version)
 	default_placement = \
@@ -101,6 +99,7 @@ class Board(object):
 		self.board = board
 		return 
 
+	# Same function, but different points of usage
 	clear = set_board
 
 	# Initializes board with variable size and bonus square locations
@@ -110,6 +109,10 @@ class Board(object):
 		ls.update(map(lambda x: (x, letter_set[x][0]), letter_set.keys()))
 		lf.update(map(lambda x: (x, letter_set[x][1]), letter_set.keys()))
 		self.letter_scores,self.letter_freq = ls,lf
+
+		# Doubles the size of the dict to include blank spaces; oddly enough,
+		# this is the least annoying method so far to deal with blank tiles
+		self.letter_scores.update([('({0})'.format(x),0) for x in self.letter_scores.keys()])
 
 		temp = []		
 		for b,l in placement.items():
@@ -131,7 +134,7 @@ class Board(object):
 
 	# From a single occupied square, get the words connected to the square in
 	# both directions.  Returns a tuple of contiguous words (which are in
-	# a-list format)
+	# a-list format); to be used mostly for getting possible AI moves
 	def get_continuous_segments(self, (x,y), for_score=False):
 		if not self.board[x][y].is_occupied(): return
 		# vertical
@@ -213,7 +216,7 @@ class Board(object):
 
 	# Calculates total score of a turn (word + bonuses)
 	def score(self, move, debug=False):
-		total_words,total_score = [],0		
+		total_words,total_score = [],0
 		for l,(i,j) in move:
 			bonus = self.board[i][j].bonus
 			for word in self.get_continuous_segments((i,j),True):
@@ -236,10 +239,8 @@ class Board(object):
 			for i in range(n):
 				bonus = self.board[i][j].bonus
 				if self.board[i][j].is_occupied():
-					if bonus == 'DL':
-						fmt_str = '| '+'{0}'*2
-					elif bonus == 'TL':
-						fmt_str = '|'+'{0}'*3
+					if '(' in self.board[i][j].tile:
+						fmt_str = '|{0}'
 					else:
 						fmt_str = '| {0} '
 					temp = fmt_str.format(self.board[i][j].tile) 
